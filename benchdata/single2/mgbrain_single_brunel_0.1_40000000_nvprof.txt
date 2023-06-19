@@ -1,0 +1,43 @@
+build time:21869ms
+neu size:28283
+syn size:39994992
+rate:0.1
+part time:0.078ms
+==14816== NVPROF is profiling process 14816, command: ./single_brunel --nsyn=40000000 --rate=0.1
+run single-net on single-GPU
+steup time:26419ms
+zone(0)'fire cnt:20328632
+zone(0)'fire rate:718.758 hz
+fire rate:718.758hz
+sim time:1.52666
+==14816== Profiling application: ./single_brunel --nsyn=40000000 --rate=0.1
+==14816== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   66.82%  1.37930s     10000  137.93us  93.982us  489.72us  MGBrain::mgsim_syn_fast_core(MGBrain::GSubNet*, int, int*, MGBrain::SpikeBuffer**)
+                   29.03%  599.26ms        31  19.331ms  1.4400us  130.44ms  [CUDA memcpy HtoD]
+                    3.91%  80.646ms     10000  8.0640us  6.9440us  15.168us  MGBrain::mgsim_neus_core(MGBrain::GSubNet*, int)
+                    0.11%  2.3255ms      1255  1.8530us  1.5040us  9.5360us  [CUDA memcpy DtoH]
+                    0.09%  1.9360ms      1254  1.5430us  1.3120us  3.8080us  [CUDA memset]
+                    0.04%  825.52us         1  825.52us  825.52us  825.52us  MGBrain::mgsim_init_core(int, curandStateXORWOW*, unsigned long)
+      API calls:   51.81%  1.39684s      1252  1.1157ms  14.804us  4.4785ms  cudaMemcpyAsync
+                   22.49%  606.34ms        32  18.948ms  4.9380us  131.14ms  cudaMemcpy
+                   14.37%  387.55ms        32  12.111ms  2.8400us  379.13ms  cudaMalloc
+                    6.15%  165.85ms         1  165.85ms  165.85ms  165.85ms  cudaDeviceReset
+                    4.14%  111.75ms     20001  5.5870us  3.8760us  2.6372ms  cudaLaunchKernel
+                    0.26%  6.9291ms       768  9.0220us     101ns  1.7251ms  cuDeviceGetAttribute
+                    0.20%  5.4558ms        28  194.85us  2.8140us  3.4049ms  cudaFree
+                    0.18%  4.8902ms      2504  1.9520us  1.3470us  10.464us  cudaStreamSynchronize
+                    0.16%  4.4431ms      1252  3.5480us  2.1520us  27.276us  cudaMemsetAsync
+                    0.16%  4.3663ms         8  545.79us  156.90us  647.17us  cuDeviceTotalMem
+                    0.04%  1.0278ms         2  513.92us  11.886us  1.0160ms  cudaStreamCreate
+                    0.02%  555.55us         8  69.443us  60.569us  101.10us  cuDeviceGetName
+                    0.00%  73.800us         7  10.542us     940ns  33.069us  cudaSetDevice
+                    0.00%  39.948us         8  4.9930us  2.0720us  9.7390us  cuDeviceGetPCIBusId
+                    0.00%  25.101us         2  12.550us  11.589us  13.512us  cudaMemcpyToSymbol
+                    0.00%  22.233us         2  11.116us  3.3760us  18.857us  cudaMemset
+                    0.00%  19.083us         1  19.083us  19.083us  19.083us  cudaDeviceSynchronize
+                    0.00%  14.766us         1  14.766us  14.766us  14.766us  cudaStreamDestroy
+                    0.00%  3.7470us        16     234ns     107ns     735ns  cuDeviceGet
+                    0.00%  1.8030us         3     601ns     201ns  1.3510us  cuDeviceGetCount
+                    0.00%  1.8020us         8     225ns     123ns     310ns  cuDeviceGetUuid
+                    0.00%     980ns         1     980ns     980ns     980ns  cudaGetDeviceCount

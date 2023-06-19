@@ -1,0 +1,227 @@
+
+============
+model:brunel
+nsyn:250000000
+rate:0.01
+build time:109.761 s
+part: 8
+part time: 65.382 s
+run multi-net on multi-GPU
+setup:141.432 s
+sim time:3.86598 s
+============
+============
+model:brunel
+nsyn:250000000
+rate:0.05
+build time:107.684 s
+part: 8
+part time: 65.8771 s
+run multi-net on multi-GPU
+setup:142.792 s
+sim time:4.2889 s
+============
+============
+model:brunel
+nsyn:250000000
+rate:0.1
+build time:109.983 s
+part: 8
+part time: 65.4026 s
+run multi-net on multi-GPU
+setup:141.423 s
+sim time:4.1567 s
+============
+============
+model:brunel
+nsyn:250000000
+rate:0.2
+build time:106.806 s
+part: 8
+part time: 64.876 s
+run multi-net on multi-GPU
+setup:144.439 s
+sim time:4.7942 s
+============
+============
+model:brunel
+nsyn:500000000
+rate:0.01
+build time:212.951 s
+part: 8
+part time: 136.416 s
+run multi-net on multi-GPU
+setup:291.727 s
+sim time:5.44128 s
+============
+============
+model:brunel
+nsyn:500000000
+rate:0.05
+build time:212.297 s
+part: 8
+part time: 137.113 s
+run multi-net on multi-GPU
+setup:292.738 s
+sim time:6.07658 s
+============
+============
+model:brunel
+nsyn:500000000
+rate:0.1
+build time:212.15 s
+part: 8
+part time: 148.731 s
+run multi-net on multi-GPU
+setup:296.718 s
+sim time:5.77166 s
+============
+============
+model:brunel
+nsyn:500000000
+rate:0.2
+build time:211.886 s
+part: 8
+part time: 136.464 s
+run multi-net on multi-GPU
+setup:292.419 s
+sim time:7.61369 s
+============
+============
+model:brunel
+nsyn:750000000
+rate:0.01
+build time:318.637 s
+part: 8
+part time: 211.125 s
+run multi-net on multi-GPU
+setup:463.072 s
+sim time:7.19702 s
+============
+============
+model:brunel
+nsyn:750000000
+rate:0.05
+build time:318.34 s
+part: 8
+part time: 211.346 s
+run multi-net on multi-GPU
+setup:463.719 s
+sim time:6.9291 s
+============
+============
+model:brunel
+nsyn:750000000
+rate:0.1
+build time:318.689 s
+part: 8
+part time: 213.569 s
+run multi-net on multi-GPU
+setup:465.376 s
+sim time:7.15584 s
+============
+============
+model:brunel
+nsyn:750000000
+rate:0.2
+build time:329.114 s
+part: 8
+part time: 216.587 s
+run multi-net on multi-GPU
+setup:465.623 s
+sim time:8.62243 s
+============
+============
+model:brunel
+nsyn:1000000000
+rate:0.05
+build time:403.081 s
+part: 8
+part time: 262.987 s
+run multi-net on multi-GPU
+setup:590.704 s
+zone(0)'fire cnt:12394259
+zone(0)'fire rate:450.536 hz
+zone(1)'fire cnt:8556544
+zone(1)'fire rate:450.558 hz
+zone(2)'fire cnt:5505031
+zone(2)'fire rate:450.752 hz
+zone(3)'fire cnt:14067379
+zone(3)'fire rate:481.216 hz
+zone(4)'fire cnt:5808540
+zone(4)'fire rate:433.797 hz
+zone(5)'fire cnt:5790282
+zone(5)'fire rate:433.469 hz
+zone(6)'fire cnt:5787627
+zone(6)'fire rate:433.4 hz
+zone(7)'fire cnt:5796327
+zone(7)'fire rate:433.5 hz
+fire rate:450.474hz
+sim time:9.85139 s
+============
+============
+model:brunel
+nsyn:1000000000
+rate:0.1
+build time:412.188 s
+part: 8
+part time: 260.86 s
+run multi-net on multi-GPU
+setup:586.831 s
+zone(0)'fire cnt:13644418
+zone(0)'fire rate:718.43 hz
+zone(1)'fire cnt:19754309
+zone(1)'fire rate:718.443 hz
+zone(2)'fire cnt:8463708
+zone(2)'fire rate:710.46 hz
+zone(3)'fire cnt:25981792
+zone(3)'fire rate:893.674 hz
+zone(4)'fire cnt:8448252
+zone(4)'fire rate:626.028 hz
+zone(5)'fire cnt:8379786
+zone(5)'fire rate:623.821 hz
+zone(6)'fire cnt:8450830
+zone(6)'fire rate:625.987 hz
+zone(7)'fire cnt:8474055
+zone(7)'fire rate:626.872 hz
+fire rate:718.407hz
+sim time:8.66841 s
+============
+============
+model:brunel
+nsyn:1000000000
+rate:0.2
+build time:413.399 s
+part: 8
+part time: 261.535 s
+run multi-net on multi-GPU
+setup:591.736 s
+zone(0)'fire cnt:23324895
+zone(0)'fire rate:1228.92 hz
+zone(1)'fire cnt:33780004
+zone(1)'fire rate:1228.63 hz
+zone(2)'fire cnt:50063372
+zone(2)'fire rate:1709.06 hz
+zone(3)'fire cnt:15249991
+zone(3)'fire rate:1241.75 hz
+zone(4)'fire cnt:12916455
+zone(4)'fire rate:965.211 hz
+zone(5)'fire cnt:12816032
+zone(5)'fire rate:961.876 hz
+zone(6)'fire cnt:12843525
+zone(6)'fire rate:962.35 hz
+zone(7)'fire cnt:12796176
+zone(7)'fire rate:960.674 hz
+fire rate:1228.9hz
+sim time:13.3799 s
+============
+============
+model:brunel
+nsyn:1000000000
+rate:0.01
+build time:404.471 s
+part: 8
+part time: 259.187 s
+run multi-net on multi-GPU
+setup:598.405 s
+trans:src_net:6[7]->tar_net:7[6]=8967

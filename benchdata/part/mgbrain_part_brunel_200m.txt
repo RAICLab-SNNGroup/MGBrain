@@ -1,0 +1,99 @@
+============
+model:brunel
+nsyn:200000000
+rate:0.01
+part method:bsim
+build time:88.887 s
+part: 2
+run multi-net on multi-GPU
+setup:106.127 s
+sim time:2.35938 s
+============
+============
+model:brunel
+nsyn:200000000
+rate:0.01
+part method:bsim
+build time:88.4689 s
+part: 4
+run multi-net on multi-GPU
+setup:115.616 s
+sim time:1.92659 s
+============
+============
+model:brunel
+nsyn:200000000
+rate:0.01
+part method:bsim
+build time:89.7385 s
+part: 8
+run multi-net on multi-GPU
+setup:118.935 s
+sim time:3.35832 s
+============
+============
+model:brunel
+nsyn:200000000
+rate:0.01
+part method:metis
+build time:86.9758 s
+part: 2
+run multi-net on multi-GPU
+setup:108.323 s
+sim time:2.38392 s
+============
+============
+model:brunel
+nsyn:200000000
+rate:0.01
+part method:metis
+build time:86.2084 s
+part: 4
+run multi-net on multi-GPU
+setup:116.394 s
+sim time:1.95817 s
+============
+============
+model:brunel
+nsyn:200000000
+rate:0.01
+part method:metis
+build time:86.4912 s
+part: 8
+run multi-net on multi-GPU
+setup:117.803 s
+sim time:4.36687 s
+============
+============
+model:brunel
+nsyn:200000000
+rate:0.01
+part method:model
+build time:86.2591 s
+part: 2
+run multi-net on multi-GPU
+setup:109.08 s
+sim time:1.98093 s
+============
+============
+model:brunel
+nsyn:200000000
+rate:0.01
+part method:model
+build time:87.5354 s
+part: 4
+run multi-net on multi-GPU
+setup:113.991 s
+sim time:1.70026 s
+============
+============
+model:brunel
+nsyn:200000000
+rate:0.01
+part method:model
+build time:88.7929 s
+part: 8
+run multi-net on multi-GPU
+setup:120.09 s
+sim time:2.776 s
+============

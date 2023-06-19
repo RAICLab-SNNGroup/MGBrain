@@ -1,0 +1,31 @@
+
+============
+model:vogel
+nsyn:200000000
+build time:197.676 s
+part:8
+part time: 81.882 s
+run multi-net on multi-GPU
+setup:124.993 s
+zone(0)'fire cnt:182394
+zone(0)'fire rate:15.5959 hz
+zone(1)'fire cnt:179767
+zone(1)'fire rate:15.4016 hz
+zone(2)'fire cnt:179524
+zone(2)'fire rate:15.3728 hz
+zone(3)'fire cnt:182477
+zone(3)'fire rate:15.595 hz
+zone(4)'fire cnt:132508
+zone(4)'fire rate:13.585 hz
+zone(5)'fire cnt:130788
+zone(5)'fire rate:13.4583 hz
+zone(6)'fire cnt:235874
+zone(6)'fire rate:13.991 hz
+zone(7)'fire cnt:238090
+zone(7)'fire rate:14.069 hz
+fire rate:14.6142hz
+sim time:11.5751 s
+============
+============
+model:vogel
+nsyn:400000000

@@ -1,0 +1,29 @@
+build time:78555ms
+neu size:52914
+syn size:139994573
+rate:0.05
+part time:0.188ms
+==23593== NVPROF is profiling process 23593, command: ./single_brunel --nsyn=140000000 --rate=0.05
+run single-net on single-GPU
+==23593== Profiling application: ./single_brunel --nsyn=140000000 --rate=0.05
+==23593== Warning: 1 records have invalid timestamps due to insufficient device buffer space. You can configure the buffer space using the option --device-buffer-size.
+==23593== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:  100.00%  296.29ms        20  14.815ms  1.3760us  291.50ms  [CUDA memcpy HtoD]
+                    0.00%  3.7110us         2  1.8550us  1.3760us  2.3350us  [CUDA memset]
+      API calls:   56.32%  467.90ms        24  19.496ms  3.5950us  449.12ms  cudaMalloc
+                   36.04%  299.43ms        20  14.972ms  5.7400us  291.75ms  cudaMemcpy
+                    3.65%  30.287ms       768  39.435us     115ns  14.980ms  cuDeviceGetAttribute
+                    1.87%  15.573ms         8  1.9466ms  300.00us  8.8665ms  cuDeviceTotalMem
+                    1.76%  14.643ms         1  14.643ms  14.643ms  14.643ms  cudaLaunchKernel
+                    0.23%  1.8746ms         8  234.32us  81.316us  1.1348ms  cuDeviceGetName
+                    0.11%  949.33us         2  474.66us  12.159us  937.17us  cudaStreamCreate
+                    0.00%  38.842us         4  9.7100us  2.5870us  21.294us  cudaSetDevice
+                    0.00%  29.402us         8  3.6750us  2.0380us  7.2190us  cuDeviceGetPCIBusId
+                    0.00%  22.244us         2  11.122us  3.9660us  18.278us  cudaMemset
+                    0.00%  8.2900us        16     518ns     178ns  1.2180us  cuDeviceGet
+                    0.00%  4.7180us         8     589ns     330ns     850ns  cuDeviceGetUuid
+                    0.00%  2.2510us         3     750ns     391ns  1.1690us  cuDeviceGetCount
+                    0.00%  1.1750us         1  1.1750us  1.1750us  1.1750us  cudaGetDeviceCount
+                    0.00%     239ns         1     239ns     239ns     239ns  cudaGetErrorString
+======== Error: Application returned non-zero code 1

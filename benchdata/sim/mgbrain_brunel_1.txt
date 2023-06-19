@@ -1,0 +1,132 @@
+============
+model:brunel
+nsyn:250000000
+rate:0.01
+build time:106.692 s
+part: 1
+part time: 0.000259 s
+run single-net on single-GPU
+setup:111.502 s
+sim time:3.15607 s
+============
+============
+model:brunel
+nsyn:250000000
+rate:0.05
+build time:107.573 s
+part: 1
+part time: 0.000256 s
+run single-net on single-GPU
+setup:114.746 s
+sim time:5.68713 s
+============
+============
+model:brunel
+nsyn:250000000
+rate:0.1
+build time:106.989 s
+part: 1
+part time: 0.000261 s
+run single-net on single-GPU
+setup:111.913 s
+sim time:9.15064 s
+============
+============
+model:brunel
+nsyn:250000000
+rate:0.2
+build time:106.384 s
+part: 1
+part time: 0.000294 s
+run single-net on single-GPU
+setup:110.736 s
+sim time:14.7287 s
+============
+============
+model:brunel
+nsyn:500000000
+rate:0.01
+build time:219.655 s
+part: 1
+part time: 0.000396 s
+run single-net on single-GPU
+setup:231.744 s
+sim time:5.99013 s
+============
+============
+model:brunel
+nsyn:500000000
+rate:0.05
+build time:215.668 s
+part: 1
+part time: 0.001015 s
+run single-net on single-GPU
+setup:231.504 s
+sim time:12.6856 s
+============
+============
+model:brunel
+nsyn:500000000
+rate:0.1
+build time:212.35 s
+part: 1
+part time: 0.000396 s
+run single-net on single-GPU
+setup:226.407 s
+sim time:19.5507 s
+============
+============
+model:brunel
+nsyn:500000000
+rate:0.2
+build time:213.765 s
+part: 1
+part time: 0.000365 s
+run single-net on single-GPU
+setup:231.129 s
+sim time:32.7922 s
+============
+============
+model:brunel
+nsyn:750000000
+rate:0.01
+build time:319.15 s
+part: 1
+part time: 0.000472 s
+run single-net on single-GPU
+setup:374.123 s
+sim time:9.40011 s
+============
+============
+model:brunel
+nsyn:750000000
+rate:0.05
+build time:318.629 s
+part: 1
+part time: 0.000472 s
+run single-net on single-GPU
+setup:372.255 s
+sim time:20.7554 s
+============
+============
+model:brunel
+nsyn:750000000
+rate:0.1
+build time:318.103 s
+part: 1
+part time: 0.000483 s
+run single-net on single-GPU
+setup:371.27 s
+sim time:31.9322 s
+============
+============
+model:brunel
+nsyn:750000000
+rate:0.2
+build time:321.825 s
+part: 1
+part time: 0.000472 s
+run single-net on single-GPU
+setup:369.994 s
+sim time:58.1047 s
+============

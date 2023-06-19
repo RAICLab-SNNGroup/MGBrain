@@ -1,0 +1,56 @@
+19999
+build time:8007ms
+neu size:19997
+syn size:19993000
+part time:0.044ms
+model part cost:0
+model cut-rate:0(0/19993000)
+model part zone neu:(0:19997)	 Standard Deviation:0
+model part zone syn:(0:19993000)	 Standard Deviation:0
+model part zone outter:(0:0)	 Standard Deviation:0
+model part zone inner:(0:19993000)	 Standard Deviation:0
+model part zone wgt:(0:430103)	 Standard Deviation:0
+==30292== NVPROF is profiling process 30292, command: /home/cuimy/zfz/MGBrain-new/build/bench/single_brunel --nsyn=20000000
+device(1):0%,10GB
+Enable Peer Access
+run single-net on single-GPU
+steup time:9087ms
+sim time:0.585072
+0:0.003622
+1:0.557978
+2:0.018040
+3:0.009517
+4:0.004378
+5:0.149952
+6:0.395651
+0'fire cnt:551326
+0'fire rate:27.5704 hz
+fire rate:27.5704hz
+Disable Peer Access
+==30292== Profiling application: /home/cuimy/zfz/MGBrain-new/build/bench/single_brunel --nsyn=20000000
+==30292== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   60.95%  302.30ms      9990  30.259us  22.080us  47.712us  MGBrain::mgsim_syn_fast_core(MGBrain::GSubNet*, int, int*, MGBrain::SpikeBuffer**)
+                   27.14%  134.60ms        31  4.3421ms  1.0880us  33.811ms  [CUDA memcpy HtoD]
+                   11.10%  55.045ms      9990  5.5100us  4.9280us  9.7280us  MGBrain::mgsim_neus_core(MGBrain::GSubNet*, int)
+                    0.35%  1.7445ms      1335  1.3060us  1.1200us  7.5520us  [CUDA memcpy DtoH]
+                    0.28%  1.3838ms      1334  1.0370us     991ns  1.4080us  [CUDA memset]
+                    0.18%  886.40us         1  886.40us  886.40us  886.40us  MGBrain::mgsim_init_core(int, curandStateXORWOW*, unsigned long)
+                    0.01%  29.888us         1  29.888us  29.888us  29.888us  MGBrain::print_test(void)
+      API calls:   52.93%  479.67ms     22644  21.182us  1.0450us  2.3953ms  cudaStreamSynchronize
+                   19.19%  173.90ms        32  5.4345ms  2.3970us  171.49ms  cudaMalloc
+                   17.21%  155.94ms      1364  114.33us  4.1460us  34.002ms  cudaMemcpy
+                    9.31%  84.358ms     19982  4.2210us  3.4250us  2.3274ms  cudaLaunchKernel
+                    0.51%  4.6495ms        28  166.05us  2.3530us  1.1554ms  cudaFree
+                    0.46%  4.1360ms      1334  3.1000us  2.3030us  253.51us  cudaMemset
+                    0.19%  1.7115ms      2671     640ns     353ns  8.4360us  cudaSetDevice
+                    0.12%  1.1315ms         2  565.76us  263.53us  868.00us  cuDeviceTotalMem
+                    0.07%  592.27us       194  3.0520us     111ns  286.34us  cuDeviceGetAttribute
+                    0.01%  47.518us         2  23.759us  19.000us  28.518us  cuDeviceGetName
+                    0.00%  15.060us         2  7.5300us  7.0490us  8.0110us  cudaMemcpyToSymbol
+                    0.00%  7.8300us         2  3.9150us  1.2850us  6.5450us  cuDeviceGetPCIBusId
+                    0.00%  5.6640us         1  5.6640us  5.6640us  5.6640us  cudaDeviceSynchronize
+                    0.00%  1.3790us         4     344ns     120ns     974ns  cuDeviceGet
+                    0.00%     863ns         3     287ns     184ns     472ns  cuDeviceGetCount
+                    0.00%     615ns         1     615ns     615ns     615ns  cudaGetDeviceCount
+                    0.00%     409ns         2     204ns     154ns     255ns  cuDeviceGetUuid
