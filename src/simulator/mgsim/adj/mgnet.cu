@@ -1033,3 +1033,83 @@ void MGBrain::copy_consts_gpu(int max_delay, real dt, bool nlifconst, std::array
     }
     CUDACHECK(cudaDeviceSynchronize());
 }
+void MGBrain::copy_subnet_cpu(GSubNet* gnet,GSubNet* cnet)
+{
+    //神经元信息
+    toCPU(gnet->neus.I_exc,cnet->neus.I_exc,cnet->neus_size);
+    toCPU(gnet->neus.I_inh,cnet->neus.I_inh,cnet->neus_size);
+    toCPU(gnet->neus.I_buffer_exc,cnet->neus.I_buffer_exc,cnet->neus_size);
+    toCPU(gnet->neus.I_buffer_inh,cnet->neus.I_buffer_inh,cnet->neus_size);
+    toCPU(gnet->neus.Fired,cnet->neus.Fired,cnet->neus_size);
+    toCPU(gnet->neus.Fire_cnt,cnet->neus.Fire_cnt,cnet->neus_size);
+    toCPU(gnet->neus.Last_fired,cnet->neus.Last_fired,cnet->neus_size);
+    toCPU(gnet->neus.Refrac_state,cnet->neus.Refrac_state,cnet->neus_size);
+    toCPU(gnet->neus.rate,cnet->neus.rate,cnet->neus_size);
+    toCPU(gnet->neus.poisson,cnet->neus.poisson,cnet->neus_size);
+    toCPU(gnet->neus.type,cnet->neus.type,cnet->neus_size);
+    //突触信息
+    toCPU(gnet->syns.weight,cnet->syns.weight,cnet->syns_size);
+}
+
+
+// GSubNet *tmp = new GSubNet;
+//     int netid = cnet->id;
+//     tmp->id = netid;
+//     // tmp->max_delay=cnet->max_delay;
+//     tmp->neus_size = cnet->neus_size;
+//     tmp->syns_size = cnet->syns_size;
+//     // 拷贝神经元数据
+//     int num = tmp->neus_size;
+//     tmp->neus.ids = toGPU(cnet->neus.ids, num);
+//     tmp->neus.V_m = toGPU(cnet->neus.V_m, num); // lif
+//     // for(int i=0;i<10;i++){
+//     //     printf("vm:%f\n",cnet->neus.V_m[i]);
+//     // }
+//     tmp->neus.I_exc = toGPU(cnet->neus.I_exc, num);
+//     tmp->neus.I_inh = toGPU(cnet->neus.I_inh, num);
+//     tmp->neus.I_buffer_exc = toGPU(cnet->neus.I_buffer_exc, num * max_delay);
+//     tmp->neus.I_buffer_inh = toGPU(cnet->neus.I_buffer_inh, num * max_delay);
+//     tmp->neus.Fired = toGPU(cnet->neus.Fired, num);
+//     tmp->neus.Fire_cnt = toGPU(cnet->neus.Fire_cnt, num);
+//     tmp->neus.Last_fired = toGPU(cnet->neus.Last_fired, num);
+//     tmp->neus.Refrac_state = toGPU(cnet->neus.Refrac_state, num); // lif
+//     tmp->neus.rate = toGPU(cnet->neus.rate, num);                 // poisson
+//     tmp->neus.poisson = toGPU(cnet->neus.poisson, num);
+//     tmp->neus.type = toGPU(cnet->neus.type, num);
+
+//     cudaMalloc(&tmp->neus.state, num * sizeof(curandState));
+//     int blocksize = 1024;
+//     srand(time(0));
+//     mgsim_init_core<<<num / blocksize + 1, blocksize>>>(num, tmp->neus.state, rand());
+//     // tmp->neus.state = toGPU(cnet->neus.state, num);
+
+//     // 拷贝邻接信息
+//     // int sum=0;
+//     // for(int i=0;i<num;i++){
+//     //     int axon=cnet->adjs.axon_offs[i+1]-cnet->adjs.axon_offs[i];
+//     //     sum+=axon;
+//     //     printf("offs:%d\n",axon);
+//     // }
+//     // printf("offsum:%d\n",sum);
+//     tmp->adjs.axon_offs = toGPU(cnet->adjs.axon_offs, num + 1);
+//     tmp->adjs.dend_offs = toGPU(cnet->adjs.dend_offs, num + 1);
+//     size_t axon_size = cnet->adjs.axon_offs[num];
+//     size_t dend_size = cnet->adjs.dend_offs[num];
+//     tmp->adjs.axon_refs = toGPU(cnet->adjs.axon_refs, axon_size);
+//     tmp->adjs.dend_refs = toGPU(cnet->adjs.dend_refs, dend_size);
+
+//     // 拷贝突触
+//     num = cnet->syns_size;
+//     tmp->syns.src = toGPU(cnet->syns.src, num);
+//     tmp->syns.tar = toGPU(cnet->syns.tar, num);
+//     tmp->syns.weight = toGPU(cnet->syns.weight, num);
+//     tmp->syns.delay = toGPU(cnet->syns.delay, num);
+
+//     // 记录地址信息
+//     caddrs.clast_fired_addrs[netid] = tmp->neus.Last_fired;
+//     caddrs.csyn_src_addrs[netid] = tmp->syns.src;
+//     caddrs.csyn_weight_addrs[netid] = tmp->syns.weight;
+
+//     GSubNet *gnet = toGPU(tmp, 1);
+//     delete tmp;
+//     return gnet;

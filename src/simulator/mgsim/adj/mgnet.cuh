@@ -10,7 +10,6 @@ namespace MGBrain
 
         size_t *axon_offs;
         size_t *axon_refs;
-
         size_t *dend_offs;
         size_t *dend_refs;
     };
@@ -73,6 +72,7 @@ namespace MGBrain
     GSubNet *copy_subnet_gpu(GSubNet *cnet, int max_delay,CNetAddrs& addrs);
     
     size_t get_subnet_firecnt(GSubNet* cnet,GSubNet *gnet);
+    void copy_subnet_cpu(GSubNet* gnet,GSubNet* cnet);
     ///脉冲缓冲区相关数据操作
 
 

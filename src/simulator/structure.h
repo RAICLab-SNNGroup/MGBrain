@@ -24,7 +24,6 @@ namespace MGBrain
         real *rate;
         curandState *state;
     };
-    
     /// @brief 突触数据块
     struct SYNBlock
     {
@@ -60,6 +59,48 @@ namespace MGBrain
         real TAU_LTD;
         real W_max;
         real W_min;
+    };
+
+    struct SYNVec{
+        int size;
+        int* tar;
+        real* weight;
+        int* delay;
+    };
+    struct NEUVec{
+        int size;
+        int *type;
+        /// LIF
+        int *ids;
+        bool *Fired;
+        int *Fire_cnt;
+        int *Last_fired;
+        real *V_m;
+        real *I_exc;
+        real *I_inh;
+        int *Refrac_state;
+        real *I_buffer_exc;
+        real *I_buffer_inh;
+        /// 泊松
+        real *rate;
+        curandState *state;
+        /// 突触
+        SYNVec* syns;
+    };
+    struct NEUList{
+        int size;
+        NEUBlock* vecs;
+    };
+    struct GSubNet
+    {
+        /// @brief 分区数量
+        int npart;
+        /// @brief 子网络号
+        int id;
+        /// @brief 神经元数据
+        NEUList neus;
+        size_t* out_syn_size_list;
+        int*    out_net_id_list;
     };
 
 };

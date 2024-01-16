@@ -10,6 +10,7 @@ MGBrain::CNetwork::~CNetwork()
     {
         delete synapse;
     }
+    
 }
 void MGBrain::CNetwork::pushPop(Pop *p)
 {

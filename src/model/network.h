@@ -30,11 +30,9 @@ namespace MGBrain
         bool source;
         NeuronType type;
         real rate;
-        // std::vector<int> adj;
+        int fire_cnt;
         std::vector<int> nxt;
         std::vector<int> pre;
-        // std::vector<int> nxt;
-        // size_t nxts;
         Neuron(int _id,bool _source,NeuronType _type):id(_id),source(_source),type(_type){
             rate=0;
             // nxts=0;
