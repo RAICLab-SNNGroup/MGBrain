@@ -80,7 +80,7 @@ void MGBrain::NetGen::gen_net(Network &net, Model &model)
         real maxw = model.pros[i].wrange[1];
         real mind = model.pros[i].drange[0];
         real maxd = model.pros[i].drange[1];
-        if (model.pros[i].type == 1.0)
+        if (model.pros[i].ctype == 1.0)
         {
             net.synapses.reserve(net.synapses.size() + sn * tn);
             for (int m = 0; m < sn; m++)
@@ -107,7 +107,7 @@ void MGBrain::NetGen::gen_net(Network &net, Model &model)
                 }
             }
         }
-        else if (model.pros[i].type == 0.0)
+        else if (model.pros[i].ctype == 0.0)
         {
             net.synapses.reserve(net.synapses.size() + sn);
             for (int k = 0; k < sn; k++)
@@ -121,12 +121,12 @@ void MGBrain::NetGen::gen_net(Network &net, Model &model)
                 net.neurons[tar].pre.push_back(src);
             }
         }
-        else if (model.pros[i].type < 1.0 && model.pros[i].type > 0.0)
+        else if (model.pros[i].ctype < 1.0 && model.pros[i].ctype > 0.0)
         {
             if (Config::SHUFFLE_GEN)
             {
                 std::vector<bool> genlist(sn * tn);
-                size_t gen_num = std::round(genlist.size() * model.pros[i].type);
+                size_t gen_num = std::round(genlist.size() * model.pros[i].ctype);
                 for (int k = 0; k < genlist.size(); k++)
                 {
                     if (k < gen_num)
@@ -163,7 +163,7 @@ void MGBrain::NetGen::gen_net(Network &net, Model &model)
                 // time_t gen_s,gen_e,span_s,span_e,syn_s,syn_e;
                 // gen_s=clock();
                 size_t max_num = (size_t)sn * (size_t)tn;
-                size_t gen_num = static_cast<size_t>(std::round(max_num * model.pros[i].type));
+                size_t gen_num = static_cast<size_t>(std::round(max_num * model.pros[i].ctype));
                 size_t count = 0;
                 std::vector<size_t> genlist(gen_num);
                 std::vector<size_t> snxtn(sn);

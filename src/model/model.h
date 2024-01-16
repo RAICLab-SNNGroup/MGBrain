@@ -34,8 +34,10 @@ namespace MGBrain
         /// @brief 延迟范围
         std::array<real, 2> drange;
         /// @brief 连接类型
-        float type;
-        Projection(int _src,int _tar,std::array<real,2> _wrange,std::array<real,2> _drange,float _type):src(_src),tar(_tar),wrange(_wrange),drange(_drange),type(_type){}
+        float ctype;
+        /// @brief 突触类型
+        SynapseType stype;
+        Projection(int _src,int _tar,std::array<real,2> _wrange,std::array<real,2> _drange,float _ctype,SynapseType _stype):src(_src),tar(_tar),wrange(_wrange),drange(_drange),ctype(_ctype),stype(_stype){}
     };
 
     class Model
@@ -52,6 +54,8 @@ namespace MGBrain
         void set_lif_const(std::array<real,30> lifconst);
         void set_stdp_const(std::array<real,6> stdpconst);
         Population &create_pop(int num, NeuronType type, bool isSource);
+        bool connect(Population &src, Population tar, std::array<real, 2> _wrange, std::array<real, 2> _drange, float type,SynapseType _stype);
+        bool connect(Population &src, Population tar, real weight, real delay, float type,SynapseType _stype);
         bool connect(Population &src, Population tar, std::array<real, 2> _wrange, std::array<real, 2> _drange, float type);
         bool connect(Population &src, Population tar, real weight, real delay, float type);
     };

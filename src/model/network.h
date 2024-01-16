@@ -29,6 +29,7 @@ namespace MGBrain
         int id;
         bool source;
         NeuronType type;
+        /// @brief 神经元的激活概率
         real rate;
         int fire_cnt;
         std::vector<int> nxt;

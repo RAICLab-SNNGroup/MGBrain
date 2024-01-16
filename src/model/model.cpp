@@ -17,10 +17,10 @@ MGBrain::Population &MGBrain::Model::create_pop(int num, MGBrain::NeuronType typ
     pops.emplace_back(indexer++, num, isSource, type);
     return pops.back();
 }
-bool MGBrain::Model::connect(Population &src, Population tar, std::array<real, 2> _wrange, std::array<real, 2> _drange, float type)
+bool MGBrain::Model::connect(Population &src, Population tar, std::array<real, 2> _wrange, std::array<real, 2> _drange, float _ctype,SynapseType _stype)
 {
 
-    if (type == 0.0 && src.num != tar.num)
+    if (_ctype == 0.0 && src.num != tar.num)
         return false;
     int index = -1;
     for (int i = 0; i < pros.size(); i++)
@@ -34,15 +34,24 @@ bool MGBrain::Model::connect(Population &src, Population tar, std::array<real, 2
     { // 覆盖
         pros[index].wrange = _wrange;
         pros[index].drange = _drange;
-        pros[index].type = type;
+        pros[index].ctype = _ctype;
+        pros[index].stype = _stype;
     }
     else
     {
-        pros.emplace_back(src.id, tar.id, _wrange, _drange, type);
+        pros.emplace_back(src.id, tar.id, _wrange, _drange, _ctype,_stype);
     }
     return true;
 }
-bool MGBrain::Model::connect(Population &src, Population tar, real weight, real delay, float type)
+bool MGBrain::Model::connect(Population &src, Population tar, real weight, real delay, float ctype,SynapseType stype)
 {
-    return connect(src, tar, {weight, weight}, {delay, delay}, type);
+    return connect(src, tar, {weight, weight}, {delay, delay}, ctype,stype);
+}
+bool MGBrain::Model::connect(Population &src, Population tar, std::array<real, 2> _wrange, std::array<real, 2> _drange, float ctype)
+{
+    return connect(src, tar, _wrange,_drange, ctype,SynapseType::STATIC);
+}
+bool MGBrain::Model::connect(Population &src, Population tar, real weight, real delay, float ctype)
+{
+    return connect(src, tar, {weight, weight}, {delay, delay}, ctype,SynapseType::STATIC);
 }
