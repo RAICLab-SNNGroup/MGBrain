@@ -1,15 +1,17 @@
 # 查找当前目录下的所有源文件
 # 并将名称保存到 LIB_MODEL 变量
 
-# aux_source_directory(./scsim SRC_SCSIM)
-# aux_source_directory(./sgsim SRC_SGSIM)
-# aux_source_directory(./mgsim SRC_MGSIM)
-# aux_source_directory(./mgsim/mgnet SRC_MGNET)
-# aux_source_directory(./sgsim/sgnet SRC_SGNET)
+## 单CPU源文件
 FILE(GLOB SRC_SCSIM "scsim/*.cpp" "scsim/*.h")
-FILE(GLOB SRC_SGSIM "sgsim/*.cpp" "sgsim/*.h")
-FILE(GLOB SRC_SGSIM_CU "sgsim/sgnet/*.cu" "sgsim/sgnet/*.cuh")
 
+## 多GPU源文件
+FILE(GLOB SRC_MCSIM "mcsim/*.cpp" "mcsim/*.h")
+
+## 单GPU源文件
+# FILE(GLOB SRC_SGSIM "sgsim/*.cpp" "sgsim/*.h")
+# FILE(GLOB SRC_SGSIM_CU "sgsim/sgnet/*.cu" "sgsim/sgnet/*.cuh")
+
+## 多GPU源文件
 FILE(GLOB SRC_MGSIM "mgsim/adj/*.cpp" "mgsim/adj/*.h")
 FILE(GLOB SRC_MGSIM_CU "mgsim/adj/*.cu" "mgsim/adj/*.cuh")
 
@@ -19,16 +21,17 @@ if(${CMAKE_VERSION} VERSION_GREATER "3.16.0")
     add_library(mgcuda
         cudamem.cuh
         ${SRC_MGSIM_CU} 
-        ${SRC_SGSIM_CU}
+        # ${SRC_SGSIM_CU}
     )
     # target_compile_options(mgcuda ${CUDA_FAST_FLAG})
     target_include_directories(mgcuda PUBLIC /usr/local/cuda-11.4/include)
     add_library(simulator
         sim.h
-        structure.h
-        structure.cpp
-        ${SRC_SCSIM}
-        ${SRC_SGSIM}
+        struct.h
+        ustruct.h
+        # ${SRC_SCSIM}
+        # ${SRC_MCSIM}
+        # ${SRC_SGSIM}
         ${SRC_MGSIM}
     )
     target_link_libraries(simulator PUBLIC nvidia-ml ${OpenMP_CXX_LIBRARIES} mgcuda rt)
@@ -39,14 +42,15 @@ else()
     cuda_add_library(mgcuda
         cudamem.cuh
         ${SRC_MGSIM_CU} 
-        ${SRC_SGSIM_CU}
+        # ${SRC_SGSIM_CU}
     )
     add_library(simulator
         sim.h
         structure.h
         structure.cpp
-        ${SRC_SCSIM}
-        ${SRC_SGSIM}
+        # ${SRC_SCSIM}
+        # ${SRC_MCSIM}
+        # ${SRC_SGSIM}
         ${SRC_MGSIM}
     )
     target_link_libraries(simulator PUBLIC nvidia-ml mgcuda gomp rt)

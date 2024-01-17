@@ -20,7 +20,6 @@ int main()
 
     network net;
     netgen::gen_net(net, m);
-    std::cout << "build time:" << (build_e - build_s) / 1000 << "ms" << std::endl;
     std::cout << "neu size:" << net.neurons.size() << std::endl;
     std::cout << "syn size:" << net.synapses.size() << std::endl;
 

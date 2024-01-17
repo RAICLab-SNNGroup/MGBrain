@@ -104,6 +104,7 @@ void MGBrain::NetGen::gen_net(Network &net, Model &model)
                     net.synapses.emplace_back(src, tar, wgt, delay);
                     net.neurons[src].nxt.push_back(tar);
                     net.neurons[tar].pre.push_back(src);
+                    net.neurons[src].syns.push_back(net.synapses.size());
                 }
             }
         }
@@ -119,6 +120,7 @@ void MGBrain::NetGen::gen_net(Network &net, Model &model)
                 net.synapses.emplace_back(src, tar, wgt, delay);
                 net.neurons[src].nxt.push_back(tar);
                 net.neurons[tar].pre.push_back(src);
+                net.neurons[src].syns.push_back(net.synapses.size());
             }
         }
         else if (model.pros[i].ctype < 1.0 && model.pros[i].ctype > 0.0)
@@ -153,6 +155,7 @@ void MGBrain::NetGen::gen_net(Network &net, Model &model)
                             net.synapses.emplace_back(src, tar, wgt, delay);
                             net.neurons[src].nxt.push_back(tar);
                             net.neurons[tar].pre.push_back(src);
+                            net.neurons[src].syns.push_back(net.synapses.size());
                         }
                     }
                 }
@@ -214,6 +217,7 @@ void MGBrain::NetGen::gen_net(Network &net, Model &model)
                     net.synapses.emplace_back(src, tar, wgt, delay);
                     net.neurons[src].nxt.push_back(tar);
                     net.neurons[tar].pre.push_back(src);
+                    net.neurons[src].syns.push_back(net.synapses.size());
                 }
                 // syn_e=clock();
                 // float syn_time = (float)(syn_e - syn_s) / 1000 / 1000;

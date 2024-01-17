@@ -58,6 +58,34 @@ namespace MGBrain
         BSIM,
         SIMPLE,
     };
+    /// @brief LIF神经元模型常量参数
+    struct LIFConsts
+    {
+        real P22;
+        real P11exc;
+        real P11inh;
+        real P21exc;
+        real P21inh;
+        real C_m;
+        real V_reset;
+        real V_rest;
+        real V_thresh;
+        real Tau_m;
+        real Tau_exc;
+        real Tau_inh;
+        real I_offset;
+        real Tau_refrac;
+    };
+    /// @brief STDP突触模型常量参数
+    struct STDPConsts
+    {
+        real A_LTP;
+        real A_LTD;
+        real TAU_LTP;
+        real TAU_LTD;
+        real W_max;
+        real W_min;
+    };
     class Config
     {
     public:

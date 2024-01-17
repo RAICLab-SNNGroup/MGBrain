@@ -116,22 +116,22 @@ namespace MGBrain
     __global__ void mgsim_neus_core(GSubNet *net, int step)
     {
         int ref = blockIdx.x * blockDim.x + threadIdx.x;
-        if (ref >= net->neus_size)
+        if (ref >= net->neus.size)
             return;
         if (net->neus.type[ref] == NeuronType::POISSON)
         { /// 仿真泊松神经元
             float rand = curand_uniform(&(net->neus.state[ref]));
             bool fired = net->neus.rate[ref] > rand;
-            net->neus.Fired[ref] = fired;
+            net->neus.fired[ref] = fired;
             if (fired)
             {
-                net->neus.Fire_cnt[ref]++;
-                net->neus.Last_fired[ref] = step;
+                net->neus.fire_cnt[ref]++;
+                net->neus.last_fired[ref] = step;
             }
         }
         else if (net->neus.type[ref] == NeuronType::LIF)
         { /// 仿真LIF神经元
-            net->neus.Fired[ref] = false;
+            net->neus.fired[ref] = false;
             if (net->neus.Refrac_state[ref] > 0)
             {
                 --net->neus.Refrac_state[ref];
@@ -146,10 +146,10 @@ namespace MGBrain
                 bool fired = net->neus.V_m[ref] >= LIFECONSTS[4];
                 if (fired)
                 {
-                    net->neus.Fired[ref] = true;
-                    net->neus.Fire_cnt[ref]++;
+                    net->neus.fired[ref] = true;
+                    net->neus.fire_cnt[ref]++;
                     net->neus.V_m[ref] = LIFECONSTS[3];
-                    net->neus.Last_fired[ref] = step;
+                    net->neus.last_fired[ref] = step;
                     net->neus.Refrac_state[ref] = ((int)std::round(LIFECONSTS[8] / LIFECONSTS[0])) - 1;
                 }
                 else
@@ -164,7 +164,7 @@ namespace MGBrain
         else if (net->neus.type[ref] == NeuronType::LIFB)
         {
             // printf("lif0\n");
-            net->neus.Fired[ref] = false;
+            net->neus.fired[ref] = false;
 
             if (net->neus.Refrac_state[ref] > 0)
             {
@@ -177,10 +177,10 @@ namespace MGBrain
                 bool fired = net->neus.V_m[ref] >= LIFECONSTS[4];
                 if (fired)
                 {
-                    net->neus.Fired[ref] = true;
-                    net->neus.Fire_cnt[ref]++;
+                    net->neus.fired[ref] = true;
+                    net->neus.fire_cnt[ref]++;
                     net->neus.V_m[ref] = LIFECONSTS[3];
-                    net->neus.Last_fired[ref] = step;
+                    net->neus.last_fired[ref] = step;
                     net->neus.Refrac_state[ref] = ((int)std::round(LIFECONSTS[8] / LIFECONSTS[0])) - 1;
                 }
                 else
@@ -196,7 +196,7 @@ namespace MGBrain
         }
         else if (net->neus.type[ref] == NeuronType::LIFE)
         {
-            net->neus.Fired[ref] = false;
+            net->neus.fired[ref] = false;
             net->neus.I_exc[ref] = getInput(net->neus.I_buffer_exc, ref, step) + net->neus.I_exc[ref] * (0.98f);
             net->neus.I_inh[ref] = -getInput(net->neus.I_buffer_inh, ref, step) + net->neus.I_inh[ref] * (0.99f);
             if (net->neus.Refrac_state[ref] > 0)
@@ -210,11 +210,11 @@ namespace MGBrain
                 bool fired = net->neus.V_m[ref] >= LIFECONSTS[4];
                 if (fired)
                 {
-                    net->neus.Fired[ref] = true;
-                    net->neus.Fire_cnt[ref]++;
+                    net->neus.fired[ref] = true;
+                    net->neus.fire_cnt[ref]++;
 
                     net->neus.V_m[ref] = LIFECONSTS[3];
-                    net->neus.Last_fired[ref] = step;
+                    net->neus.last_fired[ref] = step;
                     net->neus.Refrac_state[ref] = ((int)std::round(LIFECONSTS[8] / LIFECONSTS[0])) - 1;
                 }
                 else
@@ -235,9 +235,9 @@ namespace MGBrain
     __global__ void mgsim_syns_core(GSubNet *net, int step, int *buffer_size_list, SpikeBuffer **buffers)
     {
         int nid = blockIdx.x * blockDim.x + threadIdx.x;
-        if (nid >= net->neus_size)
+        if (nid >= net->neus.size)
             return;
-        if (!net->neus.Fired[nid])
+        if (!net->neus.fired[nid])
             return;
         size_t start_loc = net->adjs.axon_offs[nid];
         size_t size = net->adjs.axon_offs[nid + 1] - start_loc;
@@ -271,9 +271,9 @@ namespace MGBrain
     __global__ void mgsim_syn_fast_core(GSubNet *net, int step, int *buffer_size_list, SpikeBuffer **buffers)
     {
         int nid = blockIdx.x;
-        if (nid >= net->neus_size)
+        if (nid >= net->neus.size)
             return;
-        if (!net->neus.Fired[nid])
+        if (!net->neus.fired[nid])
             return;
         size_t start_loc = net->adjs.axon_offs[nid];
         size_t size = net->adjs.axon_offs[nid + 1] - start_loc;
@@ -306,9 +306,9 @@ namespace MGBrain
     __global__ void mgsim_syn_fast_dense_core(GSubNet *net, int step, SpikeDenseBuffer **buffers)
     {
         int nid = blockIdx.x;
-        if (nid >= net->neus_size)
+        if (nid >= net->neus.size)
             return;
-        if (!net->neus.Fired[nid])
+        if (!net->neus.fired[nid])
             return;
         size_t start_loc = net->adjs.axon_offs[nid];
         size_t size = net->adjs.axon_offs[nid + 1] - start_loc;
@@ -365,9 +365,9 @@ namespace MGBrain
     __global__ void mgsim_stdp_core(GSubNet *net, int step, int **last_fired_addrs, int **syn_src_addrs, real **syn_weight_addrs)
     {
         int nid = blockIdx.x * blockDim.x + threadIdx.x;
-        if (nid >= net->neus_size)
+        if (nid >= net->neus.size)
             return;
-        if (!net->neus.Fired[nid])
+        if (!net->neus.fired[nid])
             return;
         size_t axon_offset = net->adjs.axon_offs[nid];
         size_t axon_size = net->adjs.axon_offs[nid + 1] - axon_offset;
@@ -379,13 +379,13 @@ namespace MGBrain
             if (zone == net->id)
             {
                 int tar = net->syns.tar[id];
-                int dt = net->neus.Last_fired[nid] - net->neus.Last_fired[tar];
+                int dt = net->neus.last_fired[nid] - net->neus.last_fired[tar];
                 atomicExch(&(net->syns.weight[id]), stdp_cal_weight(dt, net->syns.weight[id]));
             }
             else
             {
                 int tar = net->syns.tar[id];
-                int dt = net->neus.Last_fired[nid] - last_fired_addrs[zone][tar];
+                int dt = net->neus.last_fired[nid] - last_fired_addrs[zone][tar];
                 atomicExch(&(net->syns.weight[id]), stdp_cal_weight(dt, net->syns.weight[id]));
             }
         }
@@ -399,13 +399,13 @@ namespace MGBrain
             if (zone == net->id)
             {
                 int src = net->syns.src[id];
-                int dt = net->neus.Last_fired[src] - net->neus.Last_fired[nid];
+                int dt = net->neus.last_fired[src] - net->neus.last_fired[nid];
                 atomicExch(&(net->syns.weight[id]), stdp_cal_weight(dt, net->syns.weight[id]));
             }
             else
             {
                 int src = syn_src_addrs[zone][id];
-                int dt = last_fired_addrs[zone][src] - net->neus.Last_fired[nid];
+                int dt = last_fired_addrs[zone][src] - net->neus.last_fired[nid];
                 atomicExch(&(syn_weight_addrs[zone][id]), stdp_cal_weight(dt, syn_weight_addrs[zone][id]));
             }
         }
@@ -535,7 +535,7 @@ namespace MGBrain
     void mgsim_step_sparse(GSubNet *gnet, GSubNet *cnet, int step, int blocksize, BufferManager &manager, GNetAddrs &gaddrs, int turn,cudaStream_t& sim_stream)
     {
         /// 默认流用于仿真,其他流用于脉冲同步
-        int neu_size = cnet->neus_size;
+        int neu_size = cnet->neus.size;
         int gridsize = neu_size / blocksize + 1;
         int id=cnet->id;
         /// 仿真神经元
@@ -647,7 +647,7 @@ namespace MGBrain
     }
     void mgsim_step_dense(GSubNet *gnet, GSubNet *cnet, int step, int blocksize, DenseBufferManager &manager, GNetAddrs &gaddrs, int turn)
     {
-        int neu_size = cnet->neus_size;
+        int neu_size = cnet->neus.size;
         int gridsize = neu_size / blocksize + 1;
         cudaStream_t &sim_stream = manager.sim_streams[cnet->id];
         mgsim_neus_core<<<gridsize, blocksize, 0, sim_stream>>>(gnet, step);
@@ -677,27 +677,27 @@ namespace MGBrain
 };
 /// 数据操作部分
 
-void MGBrain::init_gsubnet_neus(GSubNet *cnet, int max_delay)
+void MGBrain::init_gsubnet_neus(GSubNet *cnet,size_t num, int max_delay)
 {
-    int num = cnet->neus_size;
+    cnet->neus.size=num;
     cnet->neus.ids = new int[num]();
     cnet->neus.V_m = new real[num]();
-    cnet->neus.Fired = new bool[num]();
-    cnet->neus.Fire_cnt = new int[num]();
+    cnet->neus.fired = new bool[num]();
+    cnet->neus.fire_cnt = new int[num]();
     cnet->neus.I_buffer_exc = new real[num * max_delay]();
     cnet->neus.I_buffer_inh = new real[num * max_delay]();
     cnet->neus.I_exc = new real[num]();
     cnet->neus.I_inh = new real[num]();
-    cnet->neus.Last_fired = new int[num]();
+    cnet->neus.last_fired = new int[num]();
     cnet->neus.Refrac_state = new int[num]();
-    cnet->neus.poisson = new bool[num]();
+    cnet->neus.source = new bool[num]();
     cnet->neus.type = new int[num]();
     cnet->neus.rate = new real[num]();
     // cnet->neus.state = new curandState[num]();
 }
-void MGBrain::init_gsubnet_syns(GSubNet *cnet)
+void MGBrain::init_gsubnet_syns(GSubNet *cnet,size_t num)
 {
-    int num = cnet->syns_size;
+    cnet->syns.size=num;
     cnet->syns.src = new int[num]();
     cnet->syns.tar = new int[num]();
     cnet->syns.delay = new int[num]();
@@ -705,7 +705,7 @@ void MGBrain::init_gsubnet_syns(GSubNet *cnet)
 }
 void MGBrain::init_gsubnet_adjs(GSubNet *cnet, size_t net_axon_size, size_t net_dend_size)
 {
-    int num = cnet->neus_size;
+    int num = cnet->neus.size;
 
     cnet->adjs.axon_offs = new size_t[num + 1]();
     cnet->adjs.axon_refs = new size_t[net_axon_size]();
@@ -718,15 +718,15 @@ void MGBrain::free_gsubnet(GSubNet *cnet)
     /// delete 神经元内存空间
     delete[] cnet->neus.ids;
     delete[] cnet->neus.V_m;
-    delete[] cnet->neus.Fired;
-    delete[] cnet->neus.Fire_cnt;
+    delete[] cnet->neus.fired;
+    delete[] cnet->neus.fire_cnt;
     delete[] cnet->neus.I_buffer_exc;
     delete[] cnet->neus.I_buffer_inh;
     delete[] cnet->neus.I_exc;
     delete[] cnet->neus.I_inh;
-    delete[] cnet->neus.Last_fired;
+    delete[] cnet->neus.last_fired;
     delete[] cnet->neus.Refrac_state;
-    delete[] cnet->neus.poisson;
+    delete[] cnet->neus.source;
     delete[] cnet->neus.type;
     delete[] cnet->neus.rate;
     // delete[] cnet->neus.state;
@@ -744,15 +744,15 @@ void MGBrain::free_gsubnet_gpu(GSubNet *gnet)
     /// 释放神经元显存空间
     gpuFree(tmp->neus.ids);
     gpuFree(tmp->neus.V_m);
-    gpuFree(tmp->neus.Fired);
-    gpuFree(tmp->neus.Last_fired);
-    gpuFree(tmp->neus.Fire_cnt);
+    gpuFree(tmp->neus.fired);
+    gpuFree(tmp->neus.last_fired);
+    gpuFree(tmp->neus.fire_cnt);
     gpuFree(tmp->neus.I_buffer_exc);
     gpuFree(tmp->neus.I_buffer_inh);
     gpuFree(tmp->neus.I_exc);
     gpuFree(tmp->neus.I_inh);
     gpuFree(tmp->neus.Refrac_state);
-    gpuFree(tmp->neus.poisson);
+    gpuFree(tmp->neus.source);
     gpuFree(tmp->neus.type);
     gpuFree(tmp->neus.rate);
     gpuFree(tmp->neus.state);
@@ -770,10 +770,10 @@ MGBrain::GSubNet *MGBrain::copy_subnet_gpu(GSubNet *cnet, int max_delay, CNetAdd
     int netid = cnet->id;
     tmp->id = netid;
     // tmp->max_delay=cnet->max_delay;
-    tmp->neus_size = cnet->neus_size;
-    tmp->syns_size = cnet->syns_size;
+    tmp->neus.size = cnet->neus.size;
+    tmp->syns.size = cnet->syns.size;
     // 拷贝神经元数据
-    int num = tmp->neus_size;
+    int num = tmp->neus.size;
     tmp->neus.ids = toGPU(cnet->neus.ids, num);
     tmp->neus.V_m = toGPU(cnet->neus.V_m, num); // lif
     // for(int i=0;i<10;i++){
@@ -783,28 +783,20 @@ MGBrain::GSubNet *MGBrain::copy_subnet_gpu(GSubNet *cnet, int max_delay, CNetAdd
     tmp->neus.I_inh = toGPU(cnet->neus.I_inh, num);
     tmp->neus.I_buffer_exc = toGPU(cnet->neus.I_buffer_exc, num * max_delay);
     tmp->neus.I_buffer_inh = toGPU(cnet->neus.I_buffer_inh, num * max_delay);
-    tmp->neus.Fired = toGPU(cnet->neus.Fired, num);
-    tmp->neus.Fire_cnt = toGPU(cnet->neus.Fire_cnt, num);
-    tmp->neus.Last_fired = toGPU(cnet->neus.Last_fired, num);
+    tmp->neus.fired = toGPU(cnet->neus.fired, num);
+    tmp->neus.fire_cnt = toGPU(cnet->neus.fire_cnt, num);
+    tmp->neus.last_fired = toGPU(cnet->neus.last_fired, num);
     tmp->neus.Refrac_state = toGPU(cnet->neus.Refrac_state, num); // lif
     tmp->neus.rate = toGPU(cnet->neus.rate, num);                 // poisson
-    tmp->neus.poisson = toGPU(cnet->neus.poisson, num);
+    tmp->neus.source = toGPU(cnet->neus.source, num);
     tmp->neus.type = toGPU(cnet->neus.type, num);
 
     cudaMalloc(&tmp->neus.state, num * sizeof(curandState));
     int blocksize = 1024;
     srand(time(0));
     mgsim_init_core<<<num / blocksize + 1, blocksize>>>(num, tmp->neus.state, rand());
-    // tmp->neus.state = toGPU(cnet->neus.state, num);
 
     // 拷贝邻接信息
-    // int sum=0;
-    // for(int i=0;i<num;i++){
-    //     int axon=cnet->adjs.axon_offs[i+1]-cnet->adjs.axon_offs[i];
-    //     sum+=axon;
-    //     printf("offs:%d\n",axon);
-    // }
-    // printf("offsum:%d\n",sum);
     tmp->adjs.axon_offs = toGPU(cnet->adjs.axon_offs, num + 1);
     tmp->adjs.dend_offs = toGPU(cnet->adjs.dend_offs, num + 1);
     size_t axon_size = cnet->adjs.axon_offs[num];
@@ -813,14 +805,15 @@ MGBrain::GSubNet *MGBrain::copy_subnet_gpu(GSubNet *cnet, int max_delay, CNetAdd
     tmp->adjs.dend_refs = toGPU(cnet->adjs.dend_refs, dend_size);
 
     // 拷贝突触
-    num = cnet->syns_size;
+    num = cnet->syns.size;
+    tmp->syns.size=num;
     tmp->syns.src = toGPU(cnet->syns.src, num);
     tmp->syns.tar = toGPU(cnet->syns.tar, num);
     tmp->syns.weight = toGPU(cnet->syns.weight, num);
     tmp->syns.delay = toGPU(cnet->syns.delay, num);
 
     // 记录地址信息
-    caddrs.clast_fired_addrs[netid] = tmp->neus.Last_fired;
+    caddrs.clast_fired_addrs[netid] = tmp->neus.last_fired;
     caddrs.csyn_src_addrs[netid] = tmp->syns.src;
     caddrs.csyn_weight_addrs[netid] = tmp->syns.weight;
 
@@ -832,11 +825,11 @@ MGBrain::GSubNet *MGBrain::copy_subnet_gpu(GSubNet *cnet, int max_delay, CNetAdd
 size_t MGBrain::get_subnet_firecnt(GSubNet *cnet, GSubNet *gnet)
 {
     GSubNet *tmp = toCPU(gnet, 1);
-    toCPU(tmp->neus.Fire_cnt, cnet->neus.Fire_cnt, tmp->neus_size);
+    toCPU(tmp->neus.fire_cnt, cnet->neus.fire_cnt, tmp->neus.size);
     size_t sum = 0;
-    for (int i = 0; i < tmp->neus_size; i++)
+    for (int i = 0; i < tmp->neus.size; i++)
     {
-        sum += cnet->neus.Fire_cnt[i];
+        sum += cnet->neus.fire_cnt[i];
     }
     return sum;
 }
@@ -1036,19 +1029,20 @@ void MGBrain::copy_consts_gpu(int max_delay, real dt, bool nlifconst, std::array
 void MGBrain::copy_subnet_cpu(GSubNet* gnet,GSubNet* cnet)
 {
     //神经元信息
-    toCPU(gnet->neus.I_exc,cnet->neus.I_exc,cnet->neus_size);
-    toCPU(gnet->neus.I_inh,cnet->neus.I_inh,cnet->neus_size);
-    toCPU(gnet->neus.I_buffer_exc,cnet->neus.I_buffer_exc,cnet->neus_size);
-    toCPU(gnet->neus.I_buffer_inh,cnet->neus.I_buffer_inh,cnet->neus_size);
-    toCPU(gnet->neus.Fired,cnet->neus.Fired,cnet->neus_size);
-    toCPU(gnet->neus.Fire_cnt,cnet->neus.Fire_cnt,cnet->neus_size);
-    toCPU(gnet->neus.Last_fired,cnet->neus.Last_fired,cnet->neus_size);
-    toCPU(gnet->neus.Refrac_state,cnet->neus.Refrac_state,cnet->neus_size);
-    toCPU(gnet->neus.rate,cnet->neus.rate,cnet->neus_size);
-    toCPU(gnet->neus.poisson,cnet->neus.poisson,cnet->neus_size);
-    toCPU(gnet->neus.type,cnet->neus.type,cnet->neus_size);
+    int num=cnet->neus.size;
+    toCPU(gnet->neus.I_exc,cnet->neus.I_exc,num);
+    toCPU(gnet->neus.I_inh,cnet->neus.I_inh,num);
+    toCPU(gnet->neus.I_buffer_exc,cnet->neus.I_buffer_exc,num);
+    toCPU(gnet->neus.I_buffer_inh,cnet->neus.I_buffer_inh,num);
+    toCPU(gnet->neus.fired,cnet->neus.fired,num);
+    toCPU(gnet->neus.fire_cnt,cnet->neus.fire_cnt,num);
+    toCPU(gnet->neus.last_fired,cnet->neus.last_fired,num);
+    toCPU(gnet->neus.Refrac_state,cnet->neus.Refrac_state,num);
+    toCPU(gnet->neus.rate,cnet->neus.rate,num);
+    toCPU(gnet->neus.source,cnet->neus.source,num);
+    toCPU(gnet->neus.type,cnet->neus.type,num);
     //突触信息
-    toCPU(gnet->syns.weight,cnet->syns.weight,cnet->syns_size);
+    toCPU(gnet->syns.weight,cnet->syns.weight,cnet->syns.size);
 }
 
 
@@ -1056,7 +1050,7 @@ void MGBrain::copy_subnet_cpu(GSubNet* gnet,GSubNet* cnet)
 //     int netid = cnet->id;
 //     tmp->id = netid;
 //     // tmp->max_delay=cnet->max_delay;
-//     tmp->neus_size = cnet->neus_size;
+//     tmp->neus_size = num;
 //     tmp->syns_size = cnet->syns_size;
 //     // 拷贝神经元数据
 //     int num = tmp->neus_size;
@@ -1069,9 +1063,9 @@ void MGBrain::copy_subnet_cpu(GSubNet* gnet,GSubNet* cnet)
 //     tmp->neus.I_inh = toGPU(cnet->neus.I_inh, num);
 //     tmp->neus.I_buffer_exc = toGPU(cnet->neus.I_buffer_exc, num * max_delay);
 //     tmp->neus.I_buffer_inh = toGPU(cnet->neus.I_buffer_inh, num * max_delay);
-//     tmp->neus.Fired = toGPU(cnet->neus.Fired, num);
-//     tmp->neus.Fire_cnt = toGPU(cnet->neus.Fire_cnt, num);
-//     tmp->neus.Last_fired = toGPU(cnet->neus.Last_fired, num);
+//     tmp->neus.fired = toGPU(cnet->neus.fired, num);
+//     tmp->neus.fire_cnt = toGPU(cnet->neus.fire_cnt, num);
+//     tmp->neus.last_fired = toGPU(cnet->neus.last_fired, num);
 //     tmp->neus.Refrac_state = toGPU(cnet->neus.Refrac_state, num); // lif
 //     tmp->neus.rate = toGPU(cnet->neus.rate, num);                 // poisson
 //     tmp->neus.poisson = toGPU(cnet->neus.poisson, num);
@@ -1106,7 +1100,7 @@ void MGBrain::copy_subnet_cpu(GSubNet* gnet,GSubNet* cnet)
 //     tmp->syns.delay = toGPU(cnet->syns.delay, num);
 
 //     // 记录地址信息
-//     caddrs.clast_fired_addrs[netid] = tmp->neus.Last_fired;
+//     caddrs.clast_fired_addrs[netid] = tmp->neus.last_fired;
 //     caddrs.csyn_src_addrs[netid] = tmp->syns.src;
 //     caddrs.csyn_weight_addrs[netid] = tmp->syns.weight;
 

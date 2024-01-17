@@ -77,7 +77,7 @@ void MGBrain::MGSimulator::build_multinet(Network &net, std::vector<int> &part, 
         multinet.cnets[k] = new GSubNet();
         multinet.cnets[k]->id = k;
         multinet.cnets[k]->npart = npart;
-        multinet.cnets[k]->neus_size = neugrid[k].size();
+        
         multinet.cnets[k]->out_net_id_list = new int[npart];
         multinet.cnets[k]->out_syn_size_list = new size_t[npart];
         // 交错排布
@@ -89,21 +89,21 @@ void MGBrain::MGSimulator::build_multinet(Network &net, std::vector<int> &part, 
         }
 
         // 初始化神经元
-
-        init_gsubnet_neus(multinet.cnets[k], max_delay);
-        for (int i = 0; i < multinet.cnets[k]->neus_size; i++)
+        size_t neus_size = neugrid[k].size();
+        init_gsubnet_neus(multinet.cnets[k],neus_size, max_delay);
+        for (int i = 0; i < neus_size; i++)
         {
             multinet.cnets[k]->neus.ids[i] = net.neurons[neugrid[k][i]].id;
             multinet.cnets[k]->neus.V_m[i] = net.lifconst[1];
-            multinet.cnets[k]->neus.poisson[i] = net.neurons[neugrid[k][i]].source;
+            multinet.cnets[k]->neus.source[i] = net.neurons[neugrid[k][i]].source;
             multinet.cnets[k]->neus.type[i] = net.neurons[neugrid[k][i]].type;
             multinet.cnets[k]->neus.rate[i] = net.neurons[neugrid[k][i]].rate;
         }
 
         // 初始化突触
-        multinet.cnets[k]->syns_size = syns[k].size();
-        init_gsubnet_syns(multinet.cnets[k]);
-        for (int i = 0; i < syns[k].size(); i++)
+        size_t syns_size = syns[k].size();
+        init_gsubnet_syns(multinet.cnets[k],syns_size);
+        for (int i = 0; i < syns_size; i++)
         {
             multinet.cnets[k]->syns.src[i] = get<SRC>(syns[k][i]);
             multinet.cnets[k]->syns.tar[i] = get<TAR>(syns[k][i]);
@@ -113,7 +113,7 @@ void MGBrain::MGSimulator::build_multinet(Network &net, std::vector<int> &part, 
 
         // 初始化邻接信息
         init_gsubnet_adjs(multinet.cnets[k], net_axon_num[k], net_dend_num[k]);
-        for (int i = 0, a = 0, d = 0; i < multinet.cnets[k]->neus_size; i++)
+        for (int i = 0, a = 0, d = 0; i < neus_size; i++)
         {
             size_t axon_size = axons[k][i].size();
             size_t dend_size = dends[k][i].size();
@@ -599,7 +599,7 @@ MGBrain::real MGBrain::MGSimulator::get_firing_rate(real time)
     size_t allsum = 0;
     for (int i = 0; i < multinet.cnets.size(); i++)
     {
-        int neusize = multinet.cnets[i]->neus_size;
+        int neusize = multinet.cnets[i]->neus.size;
         // std::cout<<"neusize:"<<neusize<<std::endl;
         size_t num = get_subnet_firecnt(multinet.cnets[i], multinet.gnets[i]);
         std::cout << "zone(" << i << ")'fire cnt:" << num << std::endl;

@@ -1,44 +1,31 @@
 #pragma once
-// #include "../mgstruct.h"
-#include "spikeBuffer.cuh"
-#include "spikeDenseBuffer.cuh"
+#include "mgstruct.h"
+#include "spikebuffer.cuh"
+#include "spikebufferd.cuh"
 namespace MGBrain
 {
-    /// @brief 邻接信息数据块
-    struct ADJBlock
-    {
-
-        size_t *axon_offs;
-        size_t *axon_refs;
-        size_t *dend_offs;
-        size_t *dend_refs;
-    };
+    
     /// @brief 多区域子网络
     struct GSubNet
     {
         /// @brief 子网络号
         int id;
-        /// @brief 神经元数量
-        int neus_size;
+        /// @brief 网络数量
+        int npart;
         /// @brief 神经元数据块
         NEUBlock neus;
-        /// @brief 内部突触数量
-        int syns_size;
-        /// @brief 内部突触数据块
+        /// @brief 突触数据块
         SYNBlock syns;
-        /// @brief 连接出的外部区域数量
-        // int out_net_size;
-        /// @brief 连接入的外部区域数量
-        // int in_net_size;
-        int npart;
+        /// @brief 邻接信息块
+        ADJBlock adjs;
+        
         size_t* out_syn_size_list;
         int*    out_net_id_list;
-        ADJBlock adjs;
+        
     };
     
     /// @brief 仿真STDP模型时,所有设备地址信息
     struct CNetAddrs{
-
         std::vector<int*> clast_fired_addrs;
         std::vector<int*> csyn_src_addrs;
         std::vector<real*> csyn_weight_addrs;
@@ -64,8 +51,8 @@ namespace MGBrain
     };
     ///神经网络仿真数据操作
 
-    void init_gsubnet_neus(GSubNet *cnet, int max_delay);
-    void init_gsubnet_syns(GSubNet *cnet);
+    void init_gsubnet_neus(GSubNet *cnet,int num, int max_delay);
+    void init_gsubnet_syns(GSubNet *cnet,int num);
     void init_gsubnet_adjs(GSubNet *cnet,size_t net_axon_size,size_t net_dend_size);
     void free_gsubnet(GSubNet *cnet);
     void free_gsubnet_gpu(GSubNet *gnet);

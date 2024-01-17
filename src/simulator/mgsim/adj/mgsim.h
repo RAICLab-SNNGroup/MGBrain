@@ -34,7 +34,7 @@ namespace MGBrain{
             return (ref & (0xff00000000000000)) >> 56;
         }
         size_t get_syn_offset(size_t ref){
-            return ref & (0x00ffffffffffffff);
+            return (ref & (0x00ffffffffffffff));
         }
         real get_firing_rate(real time);
 

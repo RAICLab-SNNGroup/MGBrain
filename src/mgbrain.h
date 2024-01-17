@@ -19,7 +19,7 @@ typedef MGBrain::Synapse synapse;
 typedef MGBrain::NetGen netgen;
 typedef MGBrain::Partitioner parter;
 typedef MGBrain::PartType PartType;
-typedef MGBrain::SGSimultor sgsim;
+// typedef MGBrain::SGSimultor sgsim;
 // typedef MGBrain::MGSimulatorUVA mgsimuva;
 typedef MGBrain::MGSimulator mgsim;
 typedef MGBrain::NeuronType NeuType;

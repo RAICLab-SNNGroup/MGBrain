@@ -1,4 +1,4 @@
-#include "../mgstruct.h"
+#include "mgstruct.h"
 namespace MGBrain
 {
     /// @brief 脉冲缓冲池

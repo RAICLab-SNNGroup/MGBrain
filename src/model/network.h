@@ -34,6 +34,7 @@ namespace MGBrain
         int fire_cnt;
         std::vector<int> nxt;
         std::vector<int> pre;
+        std::vector<size_t> syns;
         Neuron(int _id,bool _source,NeuronType _type):id(_id),source(_source),type(_type){
             rate=0;
             // nxts=0;
@@ -54,6 +55,7 @@ namespace MGBrain
         std::vector<Pop> pops;
         std::vector<Neuron> neurons;
         std::vector<Synapse> synapses;
+
         std::array<real,30> lifconst;
         std::array<real,6> stdpconst;
         bool nlifconst=false;
