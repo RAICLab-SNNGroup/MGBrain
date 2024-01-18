@@ -1,93 +1,8 @@
 #pragma once
 #include "mgstruct.h"
-#include "spikebuffer.cuh"
-#include "spikebufferd.cuh"
 namespace MGBrain
 {
-    
-    /// @brief 多区域子网络
-    struct GSubNet
-    {
-        /// @brief 子网络号
-        int id;
-        /// @brief 网络数量
-        int npart;
-        /// @brief 神经元数据块
-        NEUBlock neus;
-        /// @brief 突触数据块
-        SYNBlock syns;
-        /// @brief 邻接信息块
-        ADJBlock adjs;
-        
-        size_t* out_syn_size_list;
-        int*    out_net_id_list;
-        
-    };
-    
-    /// @brief 仿真STDP模型时,所有设备地址信息
-    struct CNetAddrs{
-        std::vector<int*> clast_fired_addrs;
-        std::vector<int*> csyn_src_addrs;
-        std::vector<real*> csyn_weight_addrs;
-    };
-    struct GNetAddrs{
-        int **glast_fired_addrs;
-        int **gsyn_src_addrs;
-        real **gsyn_weight_addrs;
-    };
-    
-    struct MultiNet
-    {
-        std::vector<GSubNet *> cnets;
-        std::vector<GSubNet *> gnets;
-        std::vector<GNetAddrs> gaddrs;
-        CNetAddrs caddrs;
-        BufferManager manager;
-        DenseBufferManager managerd;
-        int max_delay;
-        int min_delay;
-        int blocksize;
-        // int npart;
-    };
-    ///神经网络仿真数据操作
 
-    void init_gsubnet_neus(GSubNet *cnet,int num, int max_delay);
-    void init_gsubnet_syns(GSubNet *cnet,int num);
-    void init_gsubnet_adjs(GSubNet *cnet,size_t net_axon_size,size_t net_dend_size);
-    void free_gsubnet(GSubNet *cnet);
-    void free_gsubnet_gpu(GSubNet *gnet);
-    GSubNet *copy_subnet_gpu(GSubNet *cnet, int max_delay,CNetAddrs& addrs);
-    
-    size_t get_subnet_firecnt(GSubNet* cnet,GSubNet *gnet);
-    void copy_subnet_cpu(GSubNet* gnet,GSubNet* cnet);
-    ///脉冲缓冲区相关数据操作
-
-
-    //Normal buffer
-
-    SpikeBuffer* init_buffer_gpu(int size,SpikeBuffer& cbuffer);
-    int* init_buffer_size_list_gpu(int size);
-    void free_buffer_gpu(SpikeBuffer *gbuffer);
-    SpikeBuffer **copy_buffers_gpu(std::vector<SpikeBuffer *> &cbuffers);
-
-
-    //Dense buffer
-
-    SpikeDenseBuffer* init_dense_buffer_gpu(int size,int max_delay,SpikeDenseBuffer* cbuffer,std::vector<int>& targets);
-    void free_dense_buffer_gpu(SpikeDenseBuffer* gbuffer);
-    SpikeDenseBuffer** copy_dense_buffers_gpu(std::vector<SpikeDenseBuffer*>&cbuffers);
-
-
-    
-
-    //NetAddrs相关GPU操作
-    void copy_netaddrs_gpu(GNetAddrs& gaddrs,CNetAddrs& caddrs);
-    void free_netaddrs_gpu(GNetAddrs& gaddrs);
-
-    ///仿真常量相关的数据操作
-
-    void copy_consts_gpu(int max_delay,real dt);
-    void copy_consts_gpu(int max_delay, real dt,bool nlifconst, std::array<real, 30> lifconst,bool nstdpconst, std::array<real, 6> stdpconst);
     ///仿真核函数///
 
     /// @brief cuda核函数：仿真神经元
@@ -156,8 +71,16 @@ namespace MGBrain
     void recvs_spikes_dense(GSubNet *gnet, GSubNet *cnet,int step, int blocksize, DenseBufferManager &manager, int turn, std::vector<cudaStream_t> &recv_streams);
     void mgsim_step_dense(GSubNet *gnet, GSubNet *cnet, int step, int blocksize, DenseBufferManager &manager,GNetAddrs& addrs, int turn);
 
+    // 初始化随机种子
+    void init_state(int num,curandState* gstates);
+
     
     void test(int i);
     void test2(int * buffer,int size);
+
+
+    ///仿真常量相关的数据操作
+    void copy_consts_gpu(int max_delay,real dt);
+    void copy_consts_gpu(int max_delay, real dt,bool nlifconst, std::array<real, 30> lifconst,bool nstdpconst, std::array<real, 6> stdpconst);
 
 };

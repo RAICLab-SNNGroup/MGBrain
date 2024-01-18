@@ -1,3 +1,4 @@
+#pragma once
 #include "mgstruct.h"
 namespace MGBrain
 {

@@ -7,17 +7,17 @@
 #include "cudamem.cuh"
 namespace MGBrain
 {
-    struct DENDBlock{
+    struct DendBlock{
         int size;
         int *src;
     };
-    struct AXONBlock{
+    struct AxonBlock{
         int size;
         int* tar;
         real* weight;
         int* delay;
     };
-    struct NEUBlock
+    struct NeuBlock
     {
         /// 基础信息
         int size;
@@ -34,11 +34,18 @@ namespace MGBrain
         real* I_buffer_exc;
         real* I_buffer_inh;
         /// 泊松相关
+        
+        /// @brief 激活率
         real* rate;
+        /// @brief 随机种子，用于CUDA生成随机数
         curandState *state;
+        
         /// 突触相关
-        AXONBlock* axons;
-        DENDBlock* dends;
+
+        /// @brief 轴突
+        AxonBlock* axons;
+        /// @brief 树突
+        DendBlock* dends;
     };
     
 };

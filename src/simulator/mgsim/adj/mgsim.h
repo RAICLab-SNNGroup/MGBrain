@@ -1,5 +1,5 @@
 #pragma once
-#include "mgnet.cuh"
+#include "mgnet.h"
 namespace MGBrain{
     class MGSimulator{
         /// @brief 构建的多区域脉冲神经网络

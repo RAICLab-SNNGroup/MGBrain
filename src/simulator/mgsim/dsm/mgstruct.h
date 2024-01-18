@@ -14,6 +14,9 @@ namespace MGBrain{
         int size;
         short* zone;
     };
+    struct NeusList{
+        NEUBlock block;
+    };
     
     
 };

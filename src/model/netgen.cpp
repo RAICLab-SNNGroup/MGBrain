@@ -66,6 +66,7 @@ void MGBrain::NetGen::gen_net(Network &net, Model &model)
             net.neurons.emplace_back(id, pop.source, pop.type);
         }
     }
+    model.indexer=nindexer;
     // neu_e=clock();
     // float neu_time = (float)(neu_e - neu_s) / 1000 / 1000;
     // std::cout << "neu time:" << neu_time << " s" << std::endl;
