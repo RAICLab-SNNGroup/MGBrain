@@ -1,22 +1,14 @@
 #pragma once
-#include "../../struct.h"
+#include "../../gstruct.h"
 #include <omp.h>
 namespace MGBrain{
-    struct OffsetMap
-    {
-        /* data */
-        int size;
-        int* offset;
+    
+    struct neu_list{
+        int* offsets;
+        neu_block* blocks;
+
     };
-    struct ZoneMap
-    {
-        /* data */
-        int size;
-        short* zone;
-    };
-    struct NeusList{
-        NEUBlock block;
-    };
+    
     
     
 };

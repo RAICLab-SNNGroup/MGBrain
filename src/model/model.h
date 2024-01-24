@@ -20,7 +20,7 @@ namespace MGBrain
         /// @brief 神经元类型
         NeuronType type;
         Population(int _id,int _num,bool _source,NeuronType _type):id(_id),num(_num),source(_source),type(_type){
-
+            
         }
     };
     struct Projection
@@ -37,7 +37,9 @@ namespace MGBrain
         float ctype;
         /// @brief 突触类型
         SynapseType stype;
-        Projection(int _src,int _tar,std::array<real,2> _wrange,std::array<real,2> _drange,float _ctype,SynapseType _stype):src(_src),tar(_tar),wrange(_wrange),drange(_drange),ctype(_ctype),stype(_stype){}
+        Projection(int _src,int _tar,std::array<real,2> _wrange,std::array<real,2> _drange,float _ctype,SynapseType _stype):src(_src),tar(_tar),wrange(_wrange),drange(_drange),ctype(_ctype),stype(_stype){
+
+        }
     };
 
     class Model

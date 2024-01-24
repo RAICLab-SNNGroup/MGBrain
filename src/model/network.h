@@ -50,8 +50,6 @@ namespace MGBrain
     class Network
     {
     public:
-        // int nindexer = 0;
-        // int sindexer = 0;
         std::vector<Pop> pops;
         std::vector<Neuron> neurons;
         std::vector<Synapse> synapses;

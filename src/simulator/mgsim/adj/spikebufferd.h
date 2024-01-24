@@ -8,6 +8,7 @@ namespace MGBrain
         int start;
         int end;
         int neusize;
+        /// @brief ID与offset映射
         int *mapper;
         /// @brief 脉冲发放的目标
         int *targets;

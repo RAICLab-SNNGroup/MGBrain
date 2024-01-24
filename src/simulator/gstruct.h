@@ -7,17 +7,21 @@
 #include "cudamem.cuh"
 namespace MGBrain
 {
-    struct DendBlock{
+    struct static_map{
+        int* map_offset;
+    };
+
+    struct dend_block{
         int size;
         int *src;
     };
-    struct AxonBlock{
+    struct axon_block{
         int size;
         int* tar;
         real* weight;
         int* delay;
     };
-    struct NeuBlock
+    struct neu_block
     {
         /// 基础信息
         int size;
@@ -43,9 +47,12 @@ namespace MGBrain
         /// 突触相关
 
         /// @brief 轴突
-        AxonBlock* axons;
+        axon_block* axons;
+        static_map map;
         /// @brief 树突
-        DendBlock* dends;
+        dend_block* dends;
     };
-    
+    struct gsub_net{
+          
+    };
 };
